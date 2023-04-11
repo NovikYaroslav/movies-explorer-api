@@ -1,2 +1,3 @@
 # movies-explorer-api
-backend for movies-explorer yandex practicum diploma project
+
+This is a backend for my diploma project at yandex practicum
