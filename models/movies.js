@@ -3,7 +3,7 @@ const { URL_REGEX, NAME_EN_REGEX, NAME_RU_REGEX } = require('../utils/const');
 
 const { Schema } = mongoose;
 
-const cardSchema = new Schema(
+const moviesSchema = new Schema(
   {
     country: {
       type: String,
@@ -90,4 +90,4 @@ const cardSchema = new Schema(
   { versionKey: false },
 );
 
-module.exports = mongoose.model('card', cardSchema);
+module.exports = mongoose.model('movies', moviesSchema);

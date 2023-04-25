@@ -5,9 +5,7 @@ const { URL_REGEX, NAME_EN_REGEX, NAME_RU_REGEX } = require('../utils/const');
 const {
   getMovies,
   createMovie,
-  // deleteCard,
-  // likeCard,
-  // dislikeCard,
+  deleteMovie,
 } = require('../controllers/movies');
 
 router.get('/', getMovies);
@@ -41,32 +39,14 @@ router.post(
   }),
   createMovie,
 );
-// router.delete(
-//   '/:cardId',
-//   celebrate({
-//     params: Joi.object().keys({
-//       cardId: Joi.string().required().hex().length(24),
-//     }),
-//   }),
-//   deleteCard
-// );
-// router.put(
-//   '/:cardId/likes',
-//   celebrate({
-//     params: Joi.object().keys({
-//       cardId: Joi.string().required().hex().length(24),
-//     }),
-//   }),
-//   likeCard
-// );
-// router.delete(
-//   '/:cardId/likes',
-//   celebrate({
-//     params: Joi.object().keys({
-//       cardId: Joi.string().required().hex().length(24),
-//     }),
-//   }),
-//   dislikeCard
-// );
+router.delete(
+  '/:movieId',
+  celebrate({
+    params: Joi.object().keys({
+      movieId: Joi.string().required().hex().length(24),
+    }),
+  }),
+  deleteMovie,
+);
 
 module.exports = router;

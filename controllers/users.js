@@ -4,7 +4,6 @@ const user = require('../models/user');
 const { pickKey } = require('../utils/pickKey');
 const BadRequestError = require('../utils/errors/BadRequestError');
 const AuthorizationError = require('../utils/errors/AuthorizationError');
-// const NotFoundError = require('../utils/errors/NotFoundError');
 const DublicationError = require('../utils/errors/DublicationError');
 
 module.exports.login = (req, res, next) => {
@@ -26,13 +25,6 @@ module.exports.login = (req, res, next) => {
     }))
     .catch(next);
 };
-
-// module.exports.getUsers = (req, res, next) => {
-//   user
-//     .find({})
-//     .then((users) => res.send({ data: users }))
-//     .catch(next);
-// };
 
 module.exports.createUser = (req, res, next) => {
   console.log('Создаю пользователя!');
@@ -70,19 +62,6 @@ module.exports.createUser = (req, res, next) => {
     });
 };
 
-// module.exports.getUser = (req, res, next) => {
-//   user
-//     .findById(req.params.userId)
-//     .then((targetUser) => {
-//       if (!targetUser) {
-//         next(new NotFoundError('Запрашиваемый пользователь не найден'));
-//       } else {
-//         res.send({ data: targetUser });
-//       }
-//     })
-//     .catch(next);
-// };
-
 module.exports.getCurrentUser = (req, res, next) => {
   user
     .findById(req.user._id)
@@ -110,24 +89,3 @@ module.exports.updateUser = (req, res, next) => {
       }
     });
 };
-
-// module.exports.updateUserAvatar = (req, res, next) => {
-//   user
-//     .findByIdAndUpdate(
-//       req.user._id,
-//       { avatar: req.body.avatar },
-//       { new: true, runValidators: true },
-//     )
-//     .then((updatedAvatar) => res.send({ data: updatedAvatar }))
-//     .catch((err) => {
-//       if (err.name === 'ValidationError') {
-//         next(
-//           new BadRequestError(
-//             'Переданы некорректные данные в методы создания пользователя',
-//           ),
-//         );
-//       } else {
-//         next(err);
-//       }
-//     });
-// };

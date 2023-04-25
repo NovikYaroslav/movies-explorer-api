@@ -5,13 +5,14 @@ const rateLimit = require('express-rate-limit');
 const helmet = require('helmet');
 const { errors } = require('celebrate');
 const router = require('./routers');
-// const errorHandler = require('./middlewares/error-handler');
-// const { requestLogger, errorLogger } = require('./middlewares/logger');
+const errorHandler = require('./middlewares/error-handler');
+const { requestLogger, errorLogger } = require('./middlewares/logger');
+const { MONGO_ADRESS } = require('./utils/const');
 
 const { PORT = 3001 } = process.env;
 // const allowedCors = [
-//   'https://mesto.novik.nomoredomains.work',
-//   'http://mesto.novik.nomoredomains.work',
+//   'тут будет домен https',
+//   'тут будет домен http',
 // ];
 
 // const DEFAULT_ALLOWED_METHODS = 'GET,HEAD,PUT,PATCH,POST,DELETE';
@@ -24,7 +25,7 @@ const app = express();
 mongoose.set('strictQuery', false);
 
 mongoose
-  .connect('mongodb://127.0.0.1/bitfilmsdb', {
+  .connect(MONGO_ADRESS, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
@@ -41,7 +42,7 @@ app.listen(PORT);
 app.use(express.json());
 app.use(helmet());
 app.use(limiter);
-// app.use(requestLogger);
+app.use(requestLogger);
 // eslint-disable-next-line consistent-return
 // app.use((req, res, next) => {
 //   const { method } = req;
@@ -64,6 +65,6 @@ app.get('/crash-test', () => {
   }, 0);
 });
 app.use(router);
-// app.use(errorLogger);
+app.use(errorLogger);
 app.use(errors());
-// app.use(errorHandler);
+app.use(errorHandler);

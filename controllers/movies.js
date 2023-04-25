@@ -1,7 +1,7 @@
 const movies = require('../models/movies');
 const BadRequestError = require('../utils/errors/BadRequestError');
-// const PermissionError = require('../utils/errors/PermissionError');
-// const NotFoundError = require('../utils/errors/NotFoundError');
+const PermissionError = require('../utils/errors/PermissionError');
+const NotFoundError = require('../utils/errors/NotFoundError');
 
 module.exports.getMovies = (req, res, next) => {
   movies
@@ -54,46 +54,20 @@ module.exports.createMovie = (req, res, next) => {
     });
 };
 
-// module.exports.deleteCard = (req, res, next) => {
-//   card
-//     .findById(req.params.cardId)
-//     .orFail(() => next(new NotFoundError('Карточка с таким id не найдена')))
-//     .then((cardToDelete) => {
-//       if (req.user._id === cardToDelete.owner.toString()) {
-//         card.findByIdAndRemove(req.params.cardId).then(() => {
-//           res.send({ message: 'Карточка удалена' });
-//         });
-//       } else {
-//         next(
-//           new PermissionError(
-//             'Невозможно удалить карточку другого пользователя'
-//           )
-//         );
-//       }
-//     })
-//     .catch(next);
-// };
-
-// module.exports.likeCard = (req, res, next) => {
-//   card
-//     .findByIdAndUpdate(
-//       req.params.cardId,
-//       { $addToSet: { likes: req.user._id } },
-//       { new: true }
-//     )
-//     .orFail(() => next(new NotFoundError('Карточка с таким id не найдена')))
-//     .then((targetCard) => res.send(targetCard))
-//     .catch(next);
-// };
-
-// module.exports.dislikeCard = (req, res, next) => {
-//   card
-//     .findByIdAndUpdate(
-//       req.params.cardId,
-//       { $pull: { likes: req.user._id } },
-//       { new: true }
-//     )
-//     .orFail(() => next(new NotFoundError('Карточка с таким id не найдена')))
-//     .then((targetCard) => res.send(targetCard))
-//     .catch(next);
-// };
+module.exports.deleteMovie = (req, res, next) => {
+  movies
+    .findById(req.params.movieId)
+    .orFail(() => next(new NotFoundError('Фильм с таким id не найден')))
+    .then((movieToDelete) => {
+      if (req.user._id === movieToDelete.owner.toString()) {
+        movies.findByIdAndRemove(req.params.movieId).then(() => {
+          res.send({ message: 'Фильм удален' });
+        });
+      } else {
+        next(
+          new PermissionError('Невозможно удалить фильм другого пользователя'),
+        );
+      }
+    })
+    .catch(next);
+};

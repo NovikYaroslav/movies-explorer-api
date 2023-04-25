@@ -36,9 +36,7 @@ router.post(
 );
 router.use(auth);
 router.use('/users', userRouter);
-
 router.use('/movies', moviesRouter);
-
 router.use('*', () => {
   throw new NotFoundError('Запрашиваемая страница не найдена');
 });
