@@ -1,8 +1,8 @@
 const router = require('express').Router();
 const { celebrate, Joi } = require('celebrate');
 const userRouter = require('./users');
-// const cardRouter = require('./cards');
-// const auth = require('../middlewares/auth');
+const moviesRouter = require('./movies');
+const auth = require('../middlewares/auth');
 const NotFoundError = require('../utils/errors/NotFoundError');
 const { URL_REGEX } = require('../utils/const');
 const { login, createUser } = require('../controllers/users');
@@ -34,10 +34,10 @@ router.post(
   }),
   createUser,
 );
-// router.use(auth);
+router.use(auth);
 router.use('/users', userRouter);
 
-// router.use('/cards', cardRouter);
+router.use('/movies', moviesRouter);
 
 router.use('*', () => {
   throw new NotFoundError('Запрашиваемая страница не найдена');
