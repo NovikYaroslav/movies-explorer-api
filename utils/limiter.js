@@ -5,6 +5,4 @@ const limiter = rateLimit({
   max: 200,
 });
 
-module.exports = {
-  limiter,
-};
+module.exports = limiter;
