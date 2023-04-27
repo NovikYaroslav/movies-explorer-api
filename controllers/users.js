@@ -21,13 +21,12 @@ module.exports.login = (req, res, next) => {
         res.send({ jwt });
         return;
       }
-      next(new AuthorizationError('Пользователь не найден'));
+      next(new AuthorizationError('Неверно указан email или пароль'));
     }))
     .catch(next);
 };
 
 module.exports.createUser = (req, res, next) => {
-  console.log('Создаю пользователя!');
   const {
     name, about, avatar, email, password,
   } = req.body;
@@ -84,6 +83,9 @@ module.exports.updateUser = (req, res, next) => {
             'Переданы некорректные данные в методы обновления пользователя',
           ),
         );
+      }
+      if (err.code === 11000) {
+        next(new DublicationError('Пользователь с таким email уже существует'));
       } else {
         next(err);
       }

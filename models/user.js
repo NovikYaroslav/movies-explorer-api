@@ -9,6 +9,7 @@ const userSchema = new Schema(
       type: String,
       minlength: 2,
       maxlength: 30,
+      required: true,
     },
     email: {
       type: String,
@@ -24,7 +25,6 @@ const userSchema = new Schema(
     password: {
       type: String,
       required: true,
-      minlength: 2,
       select: false,
     },
   },

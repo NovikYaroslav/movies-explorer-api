@@ -13,7 +13,6 @@ const auth = (req, res, next) => {
   const jwt = authorization.replace('Bearer ', '');
   try {
     const key = pickKey();
-    console.log(key);
     payload = jsonwebtoken.verify(jwt, key);
   } catch (err) {
     next(new AuthorizationError('Необходима авторизация'));

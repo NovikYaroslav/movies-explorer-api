@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const { celebrate, Joi } = require('celebrate');
-const { URL_REGEX, NAME_EN_REGEX, NAME_RU_REGEX } = require('../utils/const');
+const { URL_REGEX } = require('../utils/const');
 
 const {
   getMovies,
@@ -27,14 +27,9 @@ router.post(
       thumbnail: Joi.string().required().pattern(URL_REGEX).messages({
         'string.pattern.base': 'Введите корректный url превью',
       }),
-      nameRU: Joi.string().required().pattern(NAME_RU_REGEX).messages({
-        'string.pattern.base': 'Введите корректное название на русском языке',
-      }),
-      nameEN: Joi.string().required().pattern(NAME_EN_REGEX).messages({
-        'string.pattern.base':
-          'Введите корректное название на английском языке',
-      }),
-      movieId: Joi.string().required(),
+      nameRU: Joi.string().required(),
+      nameEN: Joi.string().required(),
+      movieId: Joi.number().required(),
     }),
   }),
   createMovie,

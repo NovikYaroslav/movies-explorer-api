@@ -5,7 +5,7 @@ const NotFoundError = require('../utils/errors/NotFoundError');
 
 module.exports.getMovies = (req, res, next) => {
   movies
-    .find({})
+    .find({ owner: req.user._id })
     .then((allMovies) => res.send(allMovies))
     .catch(next);
 };
@@ -42,7 +42,6 @@ module.exports.createMovie = (req, res, next) => {
     .then((newMovie) => res.send(newMovie))
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        console.log(err.message);
         next(
           new BadRequestError(
             'Переданы некорректные данные в методы создания фильма',
@@ -61,7 +60,7 @@ module.exports.deleteMovie = (req, res, next) => {
     .then((movieToDelete) => {
       if (req.user._id === movieToDelete.owner.toString()) {
         movies.findByIdAndRemove(req.params.movieId).then(() => {
-          res.send({ message: 'Фильм удален' });
+          res.send({ message: 'Фильм удален' }).catch(next);
         });
       } else {
         next(

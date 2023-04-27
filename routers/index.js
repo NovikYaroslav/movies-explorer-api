@@ -4,7 +4,6 @@ const userRouter = require('./users');
 const moviesRouter = require('./movies');
 const auth = require('../middlewares/auth');
 const NotFoundError = require('../utils/errors/NotFoundError');
-const { URL_REGEX } = require('../utils/const');
 const { login, createUser } = require('../controllers/users');
 
 router.post(
@@ -21,15 +20,11 @@ router.post(
   '/signup',
   celebrate({
     body: Joi.object().keys({
-      name: Joi.string().min(2).max(30),
-      about: Joi.string().min(2).max(30),
-      avatar: Joi.string().pattern(URL_REGEX).messages({
-        'string.pattern.base': 'Введите корректный url аватара',
-      }),
+      name: Joi.string().min(2).max(30).required(),
       email: Joi.string().email().required().messages({
         'string.email': 'Введите корректный email',
       }),
-      password: Joi.string().required().min(2),
+      password: Joi.string().required(),
     }),
   }),
   createUser,

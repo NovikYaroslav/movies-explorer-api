@@ -10,6 +10,8 @@ const { requestLogger, errorLogger } = require('./middlewares/logger');
 const { MONGO_ADRESS } = require('./utils/const');
 
 const { PORT = 3001 } = process.env;
+const { DB_ADDRESS = MONGO_ADRESS } = process.env;
+
 const allowedCors = [
   'https://movies.novik.nomoredo.nomoredomains.monster',
   'http://movies.novik.nomoredo.nomoredomains.monster',
@@ -21,26 +23,16 @@ const app = express();
 
 mongoose.set('strictQuery', false);
 
-mongoose
-  .connect(MONGO_ADRESS, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-  .then(
-    () => {
-      console.log('База подключена!');
-    },
-    (err) => {
-      console.log(err);
-    },
-  );
+mongoose.connect(DB_ADDRESS, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
 
 app.listen(PORT);
 app.use(express.json());
 app.use(helmet());
-app.use(limiter);
 app.use(requestLogger);
-// eslint-disable-next-line consistent-return
+app.use(limiter);
 app.use((req, res, next) => {
   const { method } = req;
   const { origin } = req.headers;
@@ -54,7 +46,7 @@ app.use((req, res, next) => {
     res.header('Access-Control-Allow-Headers', requestHeaders);
     return res.end();
   }
-  next();
+  return next();
 });
 app.get('/crash-test', () => {
   setTimeout(() => {

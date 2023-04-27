@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const { URL_REGEX, NAME_EN_REGEX, NAME_RU_REGEX } = require('../utils/const');
+const { URL_REGEX } = require('../utils/const');
 
 const { Schema } = mongoose;
 
@@ -61,30 +61,16 @@ const moviesSchema = new Schema(
       ref: 'user',
     },
     movieId: {
-      type: String,
+      type: Number,
       required: true,
     },
     nameRU: {
       type: String,
       required: true,
-      validate: {
-        validator(val) {
-          return NAME_RU_REGEX.test(val);
-        },
-        message:
-          'Поле "nameRU" должно содержать только русские букву и/или цифры',
-      },
     },
     nameEN: {
       type: String,
       required: true,
-      validate: {
-        validator(val) {
-          return NAME_EN_REGEX.test(val);
-        },
-        message:
-          'Поле "nameEN" должно содержать только английские букву и/или цифры',
-      },
     },
   },
   { versionKey: false },
