@@ -59,9 +59,12 @@ module.exports.deleteMovie = (req, res, next) => {
     .orFail(() => next(new NotFoundError('Фильм с таким id не найден')))
     .then((movieToDelete) => {
       if (req.user._id === movieToDelete.owner.toString()) {
-        movies.findByIdAndRemove(req.params.movieId).then(() => {
-          res.send({ message: 'Фильм удален' }).catch(next);
-        });
+        movies
+          .findByIdAndRemove(req.params.movieId)
+          .then(() => {
+            res.send({ message: 'Фильм удален' });
+          })
+          .catch(next);
       } else {
         next(
           new PermissionError('Невозможно удалить фильм другого пользователя'),
