@@ -42,11 +42,7 @@ module.exports.createMovie = (req, res, next) => {
     .then((newMovie) => res.send(newMovie))
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        next(
-          new BadRequestError(
-            'Переданы некорректные данные в методы создания фильма',
-          ),
-        );
+        next(new BadRequestError('Invalid input data'));
       } else {
         next(err);
       }
@@ -56,19 +52,17 @@ module.exports.createMovie = (req, res, next) => {
 module.exports.deleteMovie = (req, res, next) => {
   movies
     .findById(req.params.movieId)
-    .orFail(() => next(new NotFoundError('Фильм с таким id не найден')))
+    .orFail(() => next(new NotFoundError('Movie with this id was not found')))
     .then((movieToDelete) => {
       if (req.user._id === movieToDelete.owner.toString()) {
         movies
           .findByIdAndRemove(req.params.movieId)
           .then(() => {
-            res.send({ message: 'Фильм удален' });
+            res.send({ message: 'Film removed' });
           })
           .catch(next);
       } else {
-        next(
-          new PermissionError('Невозможно удалить фильм другого пользователя'),
-        );
+        next(new PermissionError('Unable to delete another users movie'));
       }
     })
     .catch(next);
