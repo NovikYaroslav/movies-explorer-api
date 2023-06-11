@@ -27,23 +27,17 @@ module.exports.login = (req, res, next) => {
 };
 
 module.exports.createUser = (req, res, next) => {
-  const {
-    name, about, avatar, email, password,
-  } = req.body;
+  const { name, email, password } = req.body;
   bcrypt
     .hash(password, 10)
     .then((hash) => user.create({
       name,
-      about,
-      avatar,
       email,
       password: hash,
     }))
     .then((newUser) => res.send({
       email: newUser.email,
       name: newUser.name,
-      about: newUser.about,
-      avatar: newUser.avatar,
     }))
     .catch((err) => {
       if (err.name === 'ValidationError') {
