@@ -13,6 +13,7 @@ const { PORT = 3001 } = process.env;
 const { DB_ADDRESS = MONGO_ADRESS } = process.env;
 
 const allowedCors = [
+  'http://localhost:3000',
   'https://movies.novik.nomoredo.nomoredomains.monster',
   'http://movies.novik.nomoredo.nomoredomains.monster',
 ];

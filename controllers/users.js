@@ -11,7 +11,7 @@ module.exports.login = (req, res, next) => {
   user
     .findOne({ email })
     .select('+password')
-    .orFail(() => next(new AuthorizationError('Пользователь не найден')))
+    .orFail(() => next(new AuthorizationError('User not found')))
     .then((userData) => bcrypt.compare(password, userData.password).then((matched) => {
       if (matched) {
         const key = pickKey();
@@ -21,40 +21,30 @@ module.exports.login = (req, res, next) => {
         res.send({ jwt });
         return;
       }
-      next(new AuthorizationError('Неверно указан email или пароль'));
+      next(new AuthorizationError('Invalid email or password'));
     }))
     .catch(next);
 };
 
 module.exports.createUser = (req, res, next) => {
-  const {
-    name, about, avatar, email, password,
-  } = req.body;
+  const { name, email, password } = req.body;
   bcrypt
     .hash(password, 10)
     .then((hash) => user.create({
       name,
-      about,
-      avatar,
       email,
       password: hash,
     }))
     .then((newUser) => res.send({
       email: newUser.email,
       name: newUser.name,
-      about: newUser.about,
-      avatar: newUser.avatar,
     }))
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        next(
-          new BadRequestError(
-            'Переданы некорректные данные в методы создания пользователя',
-          ),
-        );
+        next(new BadRequestError('Invalid input data'));
       }
       if (err.code === 11000) {
-        next(new DublicationError('Пользователь с таким email уже существует'));
+        next(new DublicationError('User with this email already exists'));
       } else {
         next(err);
       }
@@ -78,14 +68,10 @@ module.exports.updateUser = (req, res, next) => {
     .then((updatedUser) => res.send({ data: updatedUser }))
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        next(
-          new BadRequestError(
-            'Переданы некорректные данные в методы обновления пользователя',
-          ),
-        );
+        next(new BadRequestError('Invalid input data'));
       }
       if (err.code === 11000) {
-        next(new DublicationError('Пользователь с таким email уже существует'));
+        next(new DublicationError('User with this email already exists'));
       } else {
         next(err);
       }

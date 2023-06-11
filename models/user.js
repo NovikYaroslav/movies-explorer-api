@@ -19,7 +19,7 @@ const userSchema = new Schema(
         validator(isCorrect) {
           return validator.isEmail(isCorrect);
         },
-        message: 'Поле "email" должно быть валидным email-адресом',
+        message: 'The "email" field must be a valid email address',
       },
     },
     password: {

@@ -32,7 +32,7 @@ const moviesSchema = new Schema(
         validator(val) {
           return URL_REGEX.test(val);
         },
-        message: 'Поле "image" должно быть валидным url-адресом',
+        message: 'The "image" field must be a valid url',
       },
     },
     trailerLink: {
@@ -42,7 +42,7 @@ const moviesSchema = new Schema(
         validator(val) {
           return URL_REGEX.test(val);
         },
-        message: 'Поле "trailerLink" должно быть валидным url-адресом',
+        message: 'The "trailerLink" field must be a valid url',
       },
     },
     thumbnail: {
@@ -52,7 +52,7 @@ const moviesSchema = new Schema(
         validator(val) {
           return URL_REGEX.test(val);
         },
-        message: 'Поле "thumbnail" должно быть валидным url-адресом',
+        message: 'The "thumbnail" field must be a valid url',
       },
     },
     owner: {
