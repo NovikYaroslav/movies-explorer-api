@@ -1,5 +1,7 @@
 Location: https://api.movies.novik.nomoredomains.monster
 
+Frontend repo: https://github.com/NovikYaroslav/movies-explorer-frontend
+
 # "Movies explorer. Yandex Practicum Diploma"
 
 Repository for applications of the `Movies explorer` project, includes the back-end part of application.
